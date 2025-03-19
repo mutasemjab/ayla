@@ -42,6 +42,7 @@ class AuthController extends Controller
             $user->user_type = $request->get('user_type');
             $user->section_user_id = $request->get('section_user_id');
             $user->password = Hash::make($request->get('password'));
+            $user->ip_address = $request->get('ip_address');
             if ($request->has('fcm_token')) {
                 $user->fcm_token = $request->get('fcm_token');
             }
@@ -68,6 +69,8 @@ class AuthController extends Controller
             'email' => 'required_without:phone|email',
             'phone' => 'required_without:email',
             'password' => 'required ',
+            'ip_address' => 'required', // Ensure IP address is provided
+
         ], [
             'email.required_without' => 'The email field is required when phone is not present.',
             'email.email' => 'The email must be a valid email address.',
@@ -106,6 +109,10 @@ class AuthController extends Controller
         // Check the password based on whether the user is a regular user or an admin
         if (!Hash::check($request->password, $user->password)) {
             return response(['message' => 'Invalid credentials'], 401);
+        }
+
+        if ($user->ip_address !== $request->ip_address) {
+            return response(['message' => 'IP address mismatch. Login not allowed.'], 401);
         }
 
         $accessToken = $user->createToken('authToken')->accessToken;
@@ -160,7 +167,7 @@ class AuthController extends Controller
    }
 
 
-   
+
 
 }
 

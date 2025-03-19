@@ -71,14 +71,14 @@ class TransferController extends Controller
                     $wallet->total -= abs($request->get('withdrawal'));
                 }
                 $wallet->save();
-                
+
                 // Subtract the amount from the admin's wallet and create a transaction for the admin
                 $adminWallet = Wallet::where('admin_id', 1)->first();
                 if ($adminWallet) {
                     if ($request->get('deposit')) {
                         $adminWallet->total -= abs($request->get('deposit'));
                         $adminWallet->save();
-    
+
                         // Create a record in wallet_transactions table for the admin
                         $adminWalletTransaction = new WalletTransaction();
                         $adminWalletTransaction->wallet_id = $adminWallet->id;
@@ -89,26 +89,26 @@ class TransferController extends Controller
                     }
                 }
 
-                // $user = User::find($transfer->user->id); // Assuming User is the correct model for users
-                // if ($user) {
-                //     $title = 'The Admin Transfer to you';
-                //     $body = 'Check your Wallet.';
-                //     $type = $transfer->user->id; // You may need to adjust this based on your logic
-                //     $order_id = $transfer->user->id; // Keep the order_id same as user_id
+                $user = User::find($transfer->user->id); // Assuming User is the correct model for users
+                if ($user) {
+                    $title = 'The Admin Transfer to you';
+                    $body = 'Check your Wallet.';
+                    $type = $transfer->user->id; // You may need to adjust this based on your logic
+                    $order_id = $transfer->user->id; // Keep the order_id same as user_id
 
-                //     // Send push notification
-                //     AppSetting::push_notification($user->fcm_token, $title, $body, $type, $order_id);
+                    // Send push notification
+                    AppSetting::push_notification($user->fcm_token, $title, $body, $type, $order_id);
 
-                //     // Save the notification
-                //     $noti = new Notification([
-                //         'user_id' => $user->id,
-                //         'title' => $title,
-                //         'body' => $body,
-                //         'type' => $type,
-                //         'order_id' => $transfer->user->id,
-                //     ]);
-                //     $noti->save();
-                // }
+                    // Save the notification
+                    $noti = new Notification([
+                        'user_id' => $user->id,
+                        'title' => $title,
+                        'body' => $body,
+                        'type' => $type,
+                        'order_id' => $transfer->user->id,
+                    ]);
+                    $noti->save();
+                }
 
                 return redirect()->route('transfers.index')->with(['success' => 'Transfer created']);
             } else {
@@ -188,7 +188,7 @@ class TransferController extends Controller
                     $adminWalletTransaction->save();
                 }
             }
-            
+
             return redirect()->route('transfers.index')->with(['success' => 'Transfer updated']);
         } else {
             return redirect()->back()->with(['error' => 'Something went wrong']);

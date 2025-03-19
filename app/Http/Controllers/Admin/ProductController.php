@@ -55,10 +55,12 @@ class ProductController extends Controller
     public function create()
     {
         if (auth()->user()->can('product-add')) {
-            $categories = Category::get();
+            $categories = Category::where('category_id','!=',null)->get();
             $units = Unit::get();
             $cardPackages = CardPackage::all();
-            return view('admin.products.create', compact('categories', 'units','cardPackages'));
+            $lastNumber = Product::latest('number')->value('number');
+            $newNumber = $lastNumber ? $lastNumber + 1 : 1;
+            return view('admin.products.create', compact('categories', 'units','cardPackages','newNumber'));
         } else {
             return redirect()->back()
                 ->with('error', "Access Denied");
@@ -107,7 +109,7 @@ class ProductController extends Controller
     {
         if (auth()->user()->can('product-edit')) {
             $data = Product::findOrFail($id); // Retrieve the category by ID
-            $categories = Category::all();
+            $categories = Category::where('category_id','!=',null)->get();
             $units = Unit::all();
             $cardPackages = CardPackage::all();
             return view('admin.products.edit', ['cardPackages'=>$cardPackages,'units' => $units, 'categories' => $categories, 'data' => $data]);
@@ -130,7 +132,7 @@ class ProductController extends Controller
             // Find the product by ID
             $product = Product::findOrFail($id);
 
-            
+
             $product->name_en = $request->input('name_en');
             $product->name_ar = $request->input('name_ar');
             $product->description_en = $request->input('description_en');
