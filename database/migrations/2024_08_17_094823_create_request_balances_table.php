@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('request_balances', function (Blueprint $table) {
             $table->id();
             $table->double('amount');
+            $table->string('photo_of_request');
             $table->tinyInteger('status')->default(2); // 1 approve // 2 not approve // 3 reject
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

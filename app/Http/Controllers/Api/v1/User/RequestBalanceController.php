@@ -22,11 +22,16 @@ class RequestBalanceController extends Controller
         $validated = $request->validate([
             'amount' => 'required|numeric|min:1',
             'user_id' => 'required|exists:users,id',
+            'photo_of_request' => 'required',
         ]);
 
         $requestBalance = new RequestBalance();
         $requestBalance->amount = $validated['amount'];
         $requestBalance->user_id = $validated['user_id'];
+        if ($request->has('photo_of_request')) {
+            $the_file_path = uploadImage('assets/admin/uploads', $request->photo_of_request);
+            $requestBalance->photo_of_request = $the_file_path;
+        }
         $requestBalance->status = 2; // Not approved yet
         $requestBalance->save();
 

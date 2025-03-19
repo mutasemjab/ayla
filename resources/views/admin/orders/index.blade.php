@@ -43,9 +43,11 @@
                 <thead class="custom_thead">
                     <th>{{ __('messages.Status') }}</th>
                     <th>{{ __('messages.Note Voucher Id') }}</th>
+                    <th>{{ __('messages.Pin Number') }}</th>
                     <th>{{ __('messages.selling_price') }}</th>
                     <th>{{ __('messages.User') }}</th>
                     <th>{{ __('messages.product') }}</th>
+                    <th>{{ __('messages.created_at') }}</th>
                     <th>{{ __('messages.Action') }}</th>
                 </thead>
                 <tbody>
@@ -58,9 +60,13 @@
                                 {{ $detail->noteVoucher->id }}<br>
                             @endforeach
                         </td>
+                        <td>
+                            {{ $info->binNumber->bin_number ?? 'N/A' }}
+                        </td>
                         <td>{{ $info->price }}</td>
                         <td>{{ $info->user->name }}</td>
                         <td>{{ $info->product->name_ar }}</td>
+                        <td>{{ $info->created_at }}</td>
 
                         <td>
                             <a href="{{ route('orders.edit', $info->id) }}" class="btn btn-sm btn-primary">Edit</a>

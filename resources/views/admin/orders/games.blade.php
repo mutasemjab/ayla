@@ -44,19 +44,25 @@
                     <th>{{ __('messages.Status') }}</th>
                     <th>{{ __('messages.selling_price') }}</th>
                     <th>{{ __('messages.number_of_game') }}</th>
+                    <th>{{ __('messages.number_of_card') }}</th>
                     <th>{{ __('messages.User') }}</th>
                     <th>{{ __('messages.product') }}</th>
+                    <th>{{ __('messages.created_at') }}</th>
                     <th>{{ __('messages.Action') }}</th>
                 </thead>
                 <tbody>
                     @foreach ($data as $info)
                     <tr>
 
-                        <td>@if($info->order_status==1) Accepted @elseif($info->order_status==2) Failed @endif</td>
+                        <td>@if($info->order_status==1) Accepted @elseif($info->order_status==2) Failed @elseif($info->order_status==3) Pending @endif</td>
                         <td>{{ $info->price }}</td>
                         <td>{{ $info->number_of_game }}</td>
+                        <td>
+                            {{ $info->binNumber->bin_number ?? 'N/A' }}
+                        </td>
                         <td>{{ $info->user->name }}</td>
                         <td>{{ $info->product->name_ar }}</td>
+                        <td>{{ $info->created_at }}</td>
 
                         <td>
                             <a href="{{ route('orders.charge', $info->id) }}" class="btn btn-sm btn-primary">Charge</a>

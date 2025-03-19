@@ -25,6 +25,7 @@
                 <thead class="custom_thead">
                     <tr>
                         <th>{{ __('messages.Category Subscription') }}</th>
+                        <th>{{ __('messages.Number of subscription') }}</th>
                         <th>{{ __('messages.User') }}</th>
                         <th>{{ __('messages.Amount') }}</th>
                         <th>{{ __('messages.Status') }}</th>
@@ -35,6 +36,7 @@
                     @foreach ($data as $info)
                     <tr>
                         <td>{{ $info->categorySubscription->name_ar }}</td>
+                        <td>{{ $info->number_of_subscription }}</td>
                         <td>{{ $info->user->name }}</td>
                         <td>{{ $info->amount }}</td>
                         <td>

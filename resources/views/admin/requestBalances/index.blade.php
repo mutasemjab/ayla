@@ -24,6 +24,7 @@
             <table id="example2" class="table table-bordered table-hover">
                 <thead class="custom_thead">
                     <tr>
+                        <th>{{ __('messages.Photo') }}</th>
                         <th>{{ __('messages.User') }}</th>
                         <th>{{ __('messages.Amount') }}</th>
                         <th>{{ __('messages.Status') }}</th>
@@ -33,6 +34,12 @@
                 <tbody>
                     @foreach ($data as $info)
                     <tr>
+                        <td>
+                            <div class="image">
+                                <img class="custom_img" src="{{ asset('assets/admin/uploads') . '/' . $info->photo_of_request }}">
+
+                            </div>
+                        </td>
                         <td>{{ $info->user->name }}</td>
                         <td>{{ $info->amount }}</td>
                         <td>

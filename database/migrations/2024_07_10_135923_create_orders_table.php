@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->text('number')->nullable();
-            $table->tinyInteger('order_status')->default(1);  // 1 Accepted //2 Failed
+            $table->tinyInteger('order_status')->default(1);  // 1 Accepted //2 Failed // 3 for game pending
             $table->double('price');
             $table->tinyInteger('status_of_print')->default(1); // 1 print // 2 no print
             $table->text('number_of_game')->nullable();

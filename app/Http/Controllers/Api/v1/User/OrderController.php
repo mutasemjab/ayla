@@ -18,20 +18,20 @@ use Illuminate\Support\Facades\Log;
 class OrderController extends Controller
 {
 
-    
+
     public function index(Request $request)
     {
         $userId = auth()->user()->id;
-    
+
         // Get the filters from the request
         $fromDate = $request->query('from_date');
         $toDate = $request->query('to_date');
         $orderStatus = $request->query('order_status');
         $statusOfPrint = $request->query('status_of_print');
-    
+
         // Initialize the query for fetching orders
         $query = Order::with('user', 'product')->where('user_id', $userId);
-    
+
         // Apply date filtering
         if (!empty($fromDate) && !empty($toDate)) {
             $query->whereBetween('created_at', [$fromDate, $toDate]);
@@ -40,29 +40,29 @@ class OrderController extends Controller
         } elseif (!empty($toDate)) {
             $query->whereDate('created_at', '<=', $toDate);
         }
-    
+
         // Apply the order_status filter
         if (!empty($orderStatus)) {
             $query->where('order_status', $orderStatus);
         }
-    
+
         // Apply the status_of_print filter
         if (!empty($statusOfPrint)) {
             $query->where('status_of_print', $statusOfPrint);
         }
-    
+
         // Fetch the filtered orders
         $orders = $query->get();
-    
+
         // Loop through each order and append the associated voucher product details
         foreach ($orders as $order) {
             // Fetch voucher product details for the current order
             $voucherProductDetails = VoucherProductDetail::where('order_id', $order->id)->get();
-    
+
             // Add the voucher product details as a new property on the order
             $order->voucher_product_details = $voucherProductDetails;
         }
-    
+
         // Return the orders with the embedded voucher product details
         return response()->json([
             'orders' => $orders
@@ -78,7 +78,7 @@ class OrderController extends Controller
      public function store(Request $request)
     {
         $user = auth()->user();
-        
+
         // Validate the incoming request data
         $validatedData = $request->validate([
             'number' => 'nullable|string',
@@ -88,63 +88,64 @@ class OrderController extends Controller
             'user_id' => 'nullable|exists:users,id',
             'product_id' => 'required|exists:products,id',
         ]);
-    
+
         // Check if user_id is provided and if the user has a wallet
         if (!empty($validatedData['user_id'])) {
             $wallet = Wallet::where('user_id', $validatedData['user_id'])->first();
-    
+
             // Check if the wallet exists and has enough total
             if ($wallet && $wallet->total >= $validatedData['price']) {
-    
+
                 // Check if there is a matching VoucherProductDetail
                 $voucherProductDetail = VoucherProductDetail::whereHas('voucherProduct', function($query) use ($validatedData) {
                     $query->where('product_id', $validatedData['product_id']);
                 })->where('status', 2) // Only check records with status 2
                   ->first();
-    
+
                 // If no voucherProductDetail exists, return a response
                 if (!$voucherProductDetail) {
                     return response()->json(['error' => 'No card available'], 400);
                 }
-    
+
                 // Deduct the price from the wallet's total
                 $wallet->total -= $validatedData['price'];
                 $wallet->save();
-    
+
                 // Save the transaction in the wallet_transactions table
                 WalletTransaction::create([
                     'withdrawal' => $validatedData['price'],
                     'wallet_id' => $wallet->id,
                     'note' => 'Order payment deduction',
                 ]);
-    
+
                 // Create a new order with the validated data
                 $order = Order::create($validatedData);
-    
+
                 // Update the `number` field with the same value as `id`
                 $order->update(['number' => $order->id]);
-    
+
                    // Update the first voucherProductDetail with the new status and order_id
                     $voucherProductDetail->status = 1;
                     $voucherProductDetail->order_id = $order->id;
                     $voucherProductDetail->save(); // Save the changes
-    
+
                 // Optional game-related logic
                 if ($order->number_of_game) {
+                    $order->update(['order_status' => 3]);
                     // Notification logic
                     if ($user) { // Check if authenticated user exists
                         $title = 'You have a new Game Order';
                         $body = $order->number_of_game . ' from ' . $user->name . ' for ' . $order->product->name_en;
                         $type = 'Game Order';
                         $order_id = 1;
-    
+
                         // Fetch admin to send notification (assuming you're notifying a specific admin)
                         $admin = Admin::first(); // Fetch the first admin as an example, or adjust to your logic
-    
+
                         if ($admin && $admin->fcm_token) {
                             // Send push notification
                             AppSetting::push_notification($admin->fcm_token, $title, $body, $type, $order_id);
-    
+
                             // Save the notification
                             $notification = new Notification([
                                 'title' => $title,
@@ -155,7 +156,7 @@ class OrderController extends Controller
                         }
                     }
                 }
-    
+
                 // Return a JSON response with the created order
                 return response()->json($order, 200);
             } else {

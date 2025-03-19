@@ -18,26 +18,26 @@ class OrderController extends Controller
       public function indexOfGame()
     {
         // Fetch orders with their related VoucherProductDetails
-        $data = Order::whereNotNull('number_of_game')->paginate(PAGINATION_COUNT);
-    
+        $data = Order::whereNotNull('number_of_game')->with('binNumber')->paginate(PAGINATION_COUNT);
+
         return view('admin.orders.games', ['data' => $data]);
     }
-    
+
     public function charge($id)
     {
         $order = Order::findOrFail($id);
         if ($order->order_status == 3) {
             $order->order_status = 1;
             $order->save();
-    
+
             return redirect()->back()->with('message', 'Order status updated to 1 (charged)');
         }
-    
+
         return redirect()->back()->with('error', 'Order status could not be updated');
     }
-    
-    
-    
+
+
+
     public function sendNotificationToUser(Request $request)
     {
         $this->validate($request, [
@@ -45,18 +45,18 @@ class OrderController extends Controller
             'body' => 'required',
             'user_id' => 'required|exists:users,id',
         ]);
-    
+
         $user = User::findOrFail($request->user_id); // Throws exception if user not found
-        
+
         // Notification logic
         $title = $request->title;
         $body = $request->body;
         $type = 'FAILED';  // Assuming 'FAILED' as default notification type
         $order_id = 1;     // Assuming order_id = 1, modify this as per your logic
-    
+
         // Send push notification and capture the response
         $response = AppSetting::push_notification($user->fcm_token, $title, $body, $type, $order_id);
-    
+
         // Save the notification to the database
         $notification = new Notification([
             'title' => $title,
@@ -64,7 +64,7 @@ class OrderController extends Controller
             'user_id' => $user->id,  // Associate notification with the user
         ]);
         $notification->save();
-    
+
         // Check if the notification was sent successfully
         if ($response) {
             return redirect()->back()->with('message', 'Notification sent to user');
@@ -81,8 +81,8 @@ class OrderController extends Controller
       public function index()
     {
         // Fetch orders with their related VoucherProductDetails
-        $data = Order::whereNull('number_of_game')->with('voucherProductDetails')->paginate(PAGINATION_COUNT);
-    
+        $data = Order::whereNull('number_of_game')->with(['voucherProductDetails','binNumber'])->paginate(PAGINATION_COUNT);
+
         return view('admin.orders.index', ['data' => $data]);
     }
 
