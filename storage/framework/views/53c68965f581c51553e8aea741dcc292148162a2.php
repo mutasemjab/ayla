@@ -1,0 +1,115 @@
+<?php $__env->startSection('title'); ?>
+
+edit Setting
+<?php $__env->stopSection(); ?>
+
+
+
+<?php $__env->startSection('contentheaderlink'); ?>
+<a href="<?php echo e(route('admin.setting.index')); ?>"> Setting </a>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('contentheaderactive'); ?>
+تعديل
+<?php $__env->stopSection(); ?>
+
+
+<?php $__env->startSection('content'); ?>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title card_title_center"> edit Setting </h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+
+
+        <form action="<?php echo e(route('admin.setting.update',$data['id'])); ?>" method="post" enctype='multipart/form-data'>
+            <div class="row">
+                <?php echo csrf_field(); ?>
+
+
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><?php echo e(__('messages.commission_under_ten_for_wallet')); ?></label>
+                        <input name="commission_under_ten_for_wallet" id="commission_under_ten_for_wallet" class="form-control"
+                            value="<?php echo e(old('commission_under_ten_for_wallet',$data['commission_under_ten_for_wallet'])); ?>">
+                        <?php $__errorArgs = ['commission_under_ten_for_wallet'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-danger"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><?php echo e(__('messages.commission_up_ten_for_wallet')); ?></label>
+                        <input name="commission_up_ten_for_wallet" id="commission_up_ten_for_wallet" class="form-control"
+                            value="<?php echo e(old('commission_up_ten_for_wallet',$data['commission_up_ten_for_wallet'])); ?>">
+                        <?php $__errorArgs = ['commission_up_ten_for_wallet'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-danger"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><?php echo e(__('messages.commission_for_pay_invoice')); ?></label>
+                        <input name="commission_for_pay_invoice" id="commission_for_pay_invoice" class="form-control"
+                            value="<?php echo e(old('commission_for_pay_invoice',$data['commission_for_pay_invoice'])); ?>">
+                        <?php $__errorArgs = ['commission_for_pay_invoice'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                        <span class="text-danger"><?php echo e($message); ?></span>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-12">
+                    <div class="form-group text-center">
+                        <button id="do_add_item_cardd" type="submit" class="btn btn-primary btn-sm"> update</button>
+                        <a href="<?php echo e(route('admin.setting.index')); ?>" class="btn btn-sm btn-danger">cancel</a>
+
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+
+
+    </div>
+
+
+
+
+</div>
+</div>
+
+
+
+
+
+
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /home/u167651649/domains/mutasemjaber.online/public_html/ayla/resources/views/admin/settings/edit.blade.php ENDPATH**/ ?>
