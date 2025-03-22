@@ -91,6 +91,7 @@ class RequestBalanceController extends Controller
                 'deposit' => $requestBalance->amount,
                 'note' => 'Received from delear',
                 'wallet_id' => $userWallet->id,
+                'user_id' =>  auth()->user()->id,
             ]);
 
             // Update the request balance status

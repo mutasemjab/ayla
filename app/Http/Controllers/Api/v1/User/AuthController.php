@@ -69,7 +69,7 @@ class AuthController extends Controller
             'email' => 'required_without:phone|email',
             'phone' => 'required_without:email',
             'password' => 'required ',
-            'ip_address' => 'required', // Ensure IP address is provided
+            'ip_address' => 'nullable', // Ensure IP address is provided
 
         ], [
             'email.required_without' => 'The email field is required when phone is not present.',
@@ -111,7 +111,7 @@ class AuthController extends Controller
             return response(['message' => 'Invalid credentials'], 401);
         }
 
-        if ($user->ip_address !== $request->ip_address) {
+        if (!$isAdmin && isset($request->ip_address) && $user->ip_address !== $request->ip_address) {
             return response(['message' => 'IP address mismatch. Login not allowed.'], 401);
         }
 

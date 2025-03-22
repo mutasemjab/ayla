@@ -16,7 +16,7 @@ class WalletController extends Controller
 
         return response()->json(['data' => $data], 200);
     }
-   
+
     public function index()
     {
         $user_id = auth()->user()->id;
@@ -28,7 +28,7 @@ class WalletController extends Controller
 
     public function walletTransaction($wallet_id)
     {
-        $data = WalletTransaction::where('wallet_id', $wallet_id)->get();
+        $data = WalletTransaction::with('admin','user')->where('wallet_id', $wallet_id)->get();
         return response()->json(['data' => $data], 200);
     }
 

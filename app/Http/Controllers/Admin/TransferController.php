@@ -59,6 +59,7 @@ class TransferController extends Controller
                 $walletTransaction->note = $request->get('note');
                 $walletTransaction->deposit = $request->get('deposit');
                 $walletTransaction->withdrawal = abs($request->get('withdrawal'));
+                $walletTransaction->admin_id = 1;
                 $walletTransaction->save();
 
                 // Update the total in the wallets table
