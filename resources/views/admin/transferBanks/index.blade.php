@@ -25,8 +25,11 @@
                 <thead class="custom_thead">
                     <tr>
                         <th>{{ __('messages.User') }}</th>
+                        <th>{{ __('messages.User Phone') }}</th>
                         <th>{{ __('messages.Amount') }}</th>
                         <th>{{ __('messages.Name of wallet') }}</th>
+                        <th>{{ __('messages.Number of wallet') }}</th>
+                        <th>{{ __('messages.Created at') }}</th>
                         <th>{{ __('messages.Status') }}</th>
                         <th>{{ __('messages.Actions') }}</th>
                     </tr>
@@ -35,8 +38,11 @@
                     @foreach ($data as $info)
                     <tr>
                         <td>{{ $info->user->name }}</td>
+                        <td>{{ $info->user->phone }}</td>
                         <td>{{ $info->amount }}</td>
                         <td>{{ $info->name_of_wallet }}</td>
+                        <td>{{ $info->number_of_wallet }}</td>
+                        <td>{{ $info->created_at }}</td>
                         <td>
                             @if($info->status == 1)
                             {{ __('messages.Approved') }}
