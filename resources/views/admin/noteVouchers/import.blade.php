@@ -21,13 +21,13 @@ Import
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Import Note Vouchers from Excel</h3>
+                <h3 class="card-title card_title_center">Import Note Vouchers from Excel</h3>
+
+            </div>
+            <div class="card-body">
                 <a href="{{ route('noteVouchers.downloadTemplate') }}" class="btn btn-info float-right">
                     <i class="fas fa-download"></i> Download Template
                 </a>
-            </div>
-            <div class="card-body">
-
 
                 <form action="{{ route('noteVouchers.importExcel') }}" method="POST" enctype="multipart/form-data">
                     @csrf
