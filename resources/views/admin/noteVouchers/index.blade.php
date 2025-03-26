@@ -21,7 +21,10 @@
         <div class="row">
             <div class="col-md-4">
 
-
+                <a href="{{ route('noteVouchers.importForm') }}" class="btn btn-success">
+                    <i class="fas fa-file-excel"></i> Import Excel
+                </a>
+               
             </div>
 
         </div>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\NoteVoucherExport;
 use App\Http\Controllers\Controller;
+use App\Imports\NoteVoucherImport;
 use App\Models\NoteVoucher;
 use App\Models\NoteVoucherType;
 use App\Models\Product;
@@ -11,10 +13,69 @@ use App\Models\VoucherProduct;
 use App\Models\VoucherProductDetail;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class NoteVoucherController extends Controller
 {
 
+    public function importForm()
+    {
+        if (auth()->user()->can('noteVoucher-add')) {
+            $warehouses = Warehouse::all();
+            $note_voucher_types = NoteVoucherType::all();
+            return view('admin.noteVouchers.import', compact('warehouses', 'note_voucher_types'));
+        } else {
+            return redirect()->back()->with('error', "Access Denied");
+        }
+    }
+    
+    // Process Excel import
+    public function importExcel(Request $request)
+    {
+        if (auth()->user()->can('noteVoucher-add')) {
+            $request->validate([
+                'excel_file' => 'required|mimes:xlsx,xls,csv',
+                'note_voucher_type_id' => 'required|exists:note_voucher_types,id',
+                'fromWarehouse' => 'required|exists:warehouses,id',
+                'toWarehouse' => 'nullable|exists:warehouses,id',
+                'date_note_voucher' => 'required|date',
+            ]);
+
+            try {
+                // Prepare note voucher data for the import
+                $noteVoucherData = [
+                    'note_voucher_type_id' => $request->note_voucher_type_id,
+                    'date_note_voucher' => $request->date_note_voucher,
+                    'fromWarehouse' => $request->fromWarehouse,
+                    'toWarehouse' => $request->toWarehouse,
+                    'note' => $request->note,
+                ];
+
+                // Import the Excel file
+                $import = new NoteVoucherImport($noteVoucherData);
+                Excel::import($import, $request->file('excel_file'));
+
+                // Get the created note voucher
+                $noteVoucher = $import->getNoteVoucher();
+
+                if ($request->input('redirect_to') == 'show') {
+                    return redirect()->route('noteVouchers.show', $noteVoucher->id)->with('success', 'Note Voucher imported successfully!');
+                } else {
+                    return redirect()->route('noteVouchers.index')->with('success', 'Note Voucher imported successfully!');
+                }
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Error importing data: ' . $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('error', "Access Denied");
+        }
+    }
+
+    // Download template
+    public function downloadTemplate()
+    {
+        return Excel::download(new NoteVoucherExport, 'note_voucher_template.xlsx');
+    }
 
     public function index()
     {

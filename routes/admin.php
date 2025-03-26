@@ -56,7 +56,12 @@ Route::get('/products/search', [ProductController::class, 'search'])->name('prod
  Route::get('/',[DashboardController::class,'index'])->name('admin.dashboard');
  Route::get('logout',[LoginController::class,'logout'])->name('admin.logout');
 
-
+ Route::get('note-vouchers/import', [NoteVoucherController::class, 'importForm'])
+ ->name('noteVouchers.importForm');
+Route::post('note-vouchers/import', [NoteVoucherController::class, 'importExcel'])
+ ->name('noteVouchers.importExcel');
+Route::get('note-vouchers/template', [NoteVoucherController::class, 'downloadTemplate'])
+ ->name('noteVouchers.downloadTemplate');
 
 /*         start  customer                */
 Route::get('/customer/index',[CustomerController::class,'index'])->name('admin.customer.index');

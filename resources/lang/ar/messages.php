@@ -163,7 +163,7 @@ return [
     "question"=>"السؤال",
     "answer"=>"الجواب",
     'All Customers' => 'جميع العملاء',
-    'Number of Customers That make Order This Month' => 'عدد العملاء الذين قدموا طلب هذا الشهر',
+    'Number of Customers That make Order This Month' => 'عدد العملاء الذين اشتروا هذا الشهر',
     'New User This Month' => 'المستخدمون الجدد هذا الشهر',
     'Number of Total orders' => 'إجمالي الطلبات',
     'Number of Total orders Today For Mobile Cards' => 'إجمالي الطلبات اليوم لبطاقات الهاتف',
