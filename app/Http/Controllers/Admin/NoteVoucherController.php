@@ -12,6 +12,7 @@ use App\Models\Shop;
 use App\Models\VoucherProduct;
 use App\Models\VoucherProductDetail;
 use App\Models\Warehouse;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -28,27 +29,21 @@ class NoteVoucherController extends Controller
             return redirect()->back()->with('error', "Access Denied");
         }
     }
-    
+
     // Process Excel import
     public function importExcel(Request $request)
     {
         if (auth()->user()->can('noteVoucher-add')) {
             $request->validate([
                 'excel_file' => 'required|mimes:xlsx,xls,csv',
-                'note_voucher_type_id' => 'required|exists:note_voucher_types,id',
-                'fromWarehouse' => 'required|exists:warehouses,id',
-                'toWarehouse' => 'nullable|exists:warehouses,id',
-                'date_note_voucher' => 'required|date',
             ]);
 
             try {
                 // Prepare note voucher data for the import
                 $noteVoucherData = [
-                    'note_voucher_type_id' => $request->note_voucher_type_id,
-                    'date_note_voucher' => $request->date_note_voucher,
-                    'fromWarehouse' => $request->fromWarehouse,
-                    'toWarehouse' => $request->toWarehouse,
-                    'note' => $request->note,
+                    'note_voucher_type_id' => 1,
+                    'date_note_voucher' => Carbon::today(),
+                    'fromWarehouse' => 1,
                 ];
 
                 // Import the Excel file

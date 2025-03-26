@@ -27,74 +27,10 @@ Import
                 </a>
             </div>
             <div class="card-body">
-            
+
 
                 <form action="{{ route('noteVouchers.importExcel') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Voucher Type</label>
-                                <select name="note_voucher_type_id" class="form-control" required>
-                                    <option value="">Select Type</option>
-                                    @foreach($note_voucher_types as $type)
-                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('note_voucher_type_id')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Date</label>
-                                <input type="date" name="date_note_voucher" class="form-control" value="{{ date('Y-m-d') }}" required>
-                                @error('date_note_voucher')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>From Warehouse</label>
-                                <select name="fromWarehouse" class="form-control" required>
-                                    <option value="">Select Warehouse</option>
-                                    @foreach($warehouses as $warehouse)
-                                    <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('fromWarehouse')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>To Warehouse</label>
-                                <select name="toWarehouse" class="form-control">
-                                    <option value="">Select Warehouse</option>
-                                    @foreach($warehouses as $warehouse)
-                                    <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('toWarehouse')
-                                <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Note</label>
-                        <textarea name="note" class="form-control" rows="3"></textarea>
-                    </div>
 
                     <div class="form-group">
                         <label>Excel File</label>
