@@ -35,8 +35,14 @@ class CategoryController extends Controller
     {
 
         try {
-            $category = new Category();
+             // Validate request
+            $request->validate([
+                'name_en'  => 'required|string|max:255',
+                'name_ar' => 'required|string|max:255',
+                'photo' => 'required',
+            ]);
 
+            $category = new Category();
             $category->name_en = $request->get('name_en');
             $category->name_ar = $request->get('name_ar');
             $category->is_game = $request->get('is_game');
@@ -91,7 +97,7 @@ class CategoryController extends Controller
             $category->name_en = $request->get('name_en');
             $category->name_ar = $request->get('name_ar');
             $category->is_game = $request->get('is_game');
-            
+
             $parentCategoryID = $request->input('category_id');
             if ($parentCategoryID) {
                 // Attach the parent category

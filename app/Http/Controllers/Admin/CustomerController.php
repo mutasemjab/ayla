@@ -61,6 +61,14 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
       try{
+         // Validate request
+         $request->validate([
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|string|unique:users,phone',
+            'password' => 'required|string|min:6',
+        ]);
+        
           $customer = new User();
           $customer->name = $request->get('name');
           $customer->email = $request->get('email');

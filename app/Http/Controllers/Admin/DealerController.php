@@ -46,6 +46,14 @@ class DealerController extends Controller
     public function store(Request $request)
     {
       try{
+         // Validate request
+         $request->validate([
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|string|unique:users,phone',
+            'password' => 'required|string|min:6',
+        ]);
+        
           $dealer = new User();
           $dealer->name = $request->get('name');
           $dealer->email = $request->get('email');
