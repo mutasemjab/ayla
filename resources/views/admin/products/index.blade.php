@@ -75,7 +75,7 @@
                                 __('messages.Edit') }}</a>
                             @endcan
                             @can('product-delete')
-                            <form action="{{ route('products.destroy', $info->id) }}" method="POST">
+                            <form action="{{ route('products.destroy', $info->id) }}" method="POST" onsubmit="return confirmDelete(event)">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger">{{ __('messages.Delete') }}</button>
@@ -109,6 +109,13 @@
 @endsection
 
 @section('script')
-<script src="{{ asset('assets/admin/js/productss.js') }}"></script>
+<script>
+    function confirmDelete(event) {
+        event.preventDefault(); // Prevent form from submitting immediately
+        if (confirm("Are you sure you want to delete this category?")) {
+            event.target.submit(); // Submit form if confirmed
+        }
+    }
+</script>
 
 @endsection
