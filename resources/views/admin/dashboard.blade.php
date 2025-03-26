@@ -52,45 +52,32 @@
 @section('content')
 <div class="dashboard">
     <div class="card">
-        <h2>Customers Current Balance</h2>
-        <p>9,952.030JD</p>
+        <h2>{{ __('messages.All Customers') }}</h2>
+        <p>{{ $totalCustomers }}</p>
     </div>
     <div class="card">
-        <h2>Dealers Current Balance</h2>
-        <p>13,903.200JD</p>
+        <h2>{{ __('messages.Number of Customers That make Order This Month') }}</h2>
+        <p>{{ $customersWithOrdersThisMonth }}</p>
     </div>
     <div class="card">
-        <h2>Total Transfer From Dealer To Customer</h2>
-        <p>565,446.390JD</p>
+        <h2>{{ __('messages.New User This Month') }}</h2>
+        <p>{{ $newUsersThisMonth }}</p>
     </div>
     <div class="card">
-        <h2>Number of mobile cards</h2>
-        <p>174</p>
+        <h2>{{ __('messages.Number of Total orders') }}</h2>
+        <p>{{ $totalOrders }}</p>
     </div>
     <div class="card">
-        <h2>Number of mobile cards sales</h2>
-        <p>97673</p>
+        <h2>{{ __('messages.Number of Total orders Today For Mobile Cards') }}</h2>
+        <p>{{ $totalOrdersTodayMobile }}</p>
     </div>
     <div class="card">
-        <h2>Total mobile cards sales (JD)</h2>
-        <p>543,123.160</p>
-    </div>
-    <div class="card">
-        <h2>Number of game cards</h2>
-        <p>42</p>
-    </div>
-    <div class="card">
-        <h2>Number of game cards sales</h2>
-        <p>3482</p>
-    </div>
-    <div class="card">
-        <h2>Total game cards sales (JD)</h2>
-        <p>12,424.510</p>
+        <h2>{{ __('messages.Number of Total orders Today For Game Cards') }}</h2>
+        <p>{{ $totalOrdersTodayGame }}</p>
     </div>
 </div>
-
-
 @endsection
+
 
 
 

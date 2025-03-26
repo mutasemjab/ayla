@@ -28,6 +28,7 @@
                         <th>{{ __('messages.Number of subscription') }}</th>
                         <th>{{ __('messages.User') }}</th>
                         <th>{{ __('messages.Amount') }}</th>
+                        <th>{{ __('messages.Created at') }}</th>
                         <th>{{ __('messages.Status') }}</th>
                         <th>{{ __('messages.Actions') }}</th>
                     </tr>
@@ -39,6 +40,7 @@
                         <td>{{ $info->number_of_subscription }}</td>
                         <td>{{ $info->user->name }}</td>
                         <td>{{ $info->amount }}</td>
+                        <td>{{ $info->created_at }}</td>
                         <td>
                             @if($info->status == 1)
                             {{ __('messages.Approved') }}

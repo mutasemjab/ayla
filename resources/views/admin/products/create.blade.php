@@ -87,7 +87,7 @@
 
                 <div class="form-group col-md-6">
                     <label for="tax"> {{ __('messages.tax') }} %</label>
-                    <input name="tax" id="tax" class="form-control" value="{{ old('tax') }}">
+                    <input name="tax" id="tax" class="form-control" value="16" hidden>
                     @error('tax')
                     <span class="text-danger">{{ $message }}</span>
                     @enderror

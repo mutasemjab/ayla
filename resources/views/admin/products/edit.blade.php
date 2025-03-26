@@ -113,7 +113,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>{{ __('messages.tax') }} %</label>
-                        <input name="tax" id="tax" class="form-control" value="{{ old('tax', $data->tax) }}">
+                        <input name="tax" id="tax" class="form-control" value="{{ old('tax', $data->tax) }}" hidden>
                         @error('tax')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
